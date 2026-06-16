@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaBars, FaTimes, FaSignOutAlt } from "react-icons/fa";
 import "./navbar.css";
+import companyIcon from "../../assets/images/companyIcon.png";
 
 const Navbar = ({ user, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,12 +44,12 @@ const Navbar = ({ user, onLogout }) => {
       <nav className="navbar-container">
         {/* Brand Section */}
         <Link to="/" className="navbar-brand">
-          <div className="brand-icon-wrapper">
-            <span className="brand-icon">⏰</span>
-          </div>
+           
+              <img style={{width: "60px"}} src={companyIcon} alt="" />
+            
           <div className="brand-text">
-            <span className="brand-title">AttendEase</span>
-            <span className="brand-subtitle">Smart Attendance</span>
+            <span className="brand-title">Desired Technologies</span>
+            <span className="brand-subtitle">Smart Attendance System</span>
           </div>
         </Link>
 

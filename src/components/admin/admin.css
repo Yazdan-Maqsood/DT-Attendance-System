@@ -546,3 +546,217 @@ select.form-input {
 .table-wrapper::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+/* ========== Date Grouping Styles ========== */
+
+/* Date Separator */
+.date-separator {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px 30px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 2px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.date-separator-line {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #667eea, transparent);
+  border-radius: 2px;
+}
+
+.date-separator-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.date-separator-icon {
+  font-size: 20px;
+}
+
+.date-separator-text {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: -0.2px;
+}
+
+.date-separator-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* Date Group */
+.date-group {
+  margin-bottom: 0;
+  border-bottom: 3px solid #e2e8f0;
+}
+
+.date-group:last-child {
+  border-bottom: none;
+}
+
+/* Date Group Table */
+.date-group-table {
+  margin-bottom: 0;
+}
+
+.date-group-table thead {
+  background: #fafbfc;
+}
+
+.date-group-table thead th {
+  font-size: 11px;
+  padding: 12px 20px;
+  color: #64748b;
+}
+
+/* Grouped Records Container */
+.grouped-records {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* Time Badges for Admin Table */
+.time-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  min-width: 70px;
+  text-align: center;
+}
+
+.time-in {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid rgba(21, 87, 36, 0.2);
+}
+
+.time-out {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid rgba(114, 28, 36, 0.2);
+}
+
+/* Current Date Highlight */
+.date-separator.today {
+  background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+  border-left: 4px solid #667eea;
+}
+
+.date-separator.today .date-separator-content {
+  border-color: #667eea;
+  box-shadow: 0 2px 15px rgba(102, 126, 234, 0.15);
+}
+
+.date-separator.today .date-separator-text {
+  color: #4338ca;
+}
+
+/* Smooth scroll for grouped records */
+.grouped-records::-webkit-scrollbar {
+  width: 8px;
+}
+
+.grouped-records::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 4px;
+}
+
+.grouped-records::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.grouped-records::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Hover effect on date group */
+.date-group:hover .date-separator {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e8eef5 100%);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .date-separator {
+    padding: 15px;
+    gap: 10px;
+  }
+  
+  .date-separator-content {
+    padding: 8px 15px;
+    gap: 8px;
+  }
+  
+  .date-separator-text {
+    font-size: 13px;
+  }
+  
+  .date-separator-line {
+    display: none;
+  }
+  
+  .date-group-table thead th {
+    padding: 10px 12px;
+    font-size: 10px;
+  }
+  
+  .date-group-table tbody td {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+}
+
+/* Print styles for reports */
+@media print {
+  .date-separator {
+    break-inside: avoid;
+    page-break-after: avoid;
+  }
+  
+  .date-group {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  
+  .navbar,
+  .header-banner,
+  .header-actions {
+    display: none;
+  }
+}
+
+/* Animation for new groups */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.date-group {
+  animation: slideDown 0.3s ease-out;
+}

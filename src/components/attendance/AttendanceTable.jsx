@@ -86,14 +86,14 @@ const AttendanceTable = ({ records = [], searchTerm = "", filterMonth = "", onSe
       </div>
 
       <div className="table-wrapper">
-        <table className="students-table">
+        <table className="students-table attendance-history-table">
           <thead>
             <tr>
-              <th className="col-date">Date</th>
-              <th className="col-time">Check In</th>
-              <th className="col-time">Check Out</th>
-              <th className="col-hours">Working Hours</th>
-              <th className="col-status">Status</th>
+              <th className="col-date-header">Date</th>
+              <th className="col-time-header">Check In</th>
+              <th className="col-time-header">Check Out</th>
+              <th className="col-hours-header">Working Hours</th>
+              <th className="col-status-header">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -104,9 +104,17 @@ const AttendanceTable = ({ records = [], searchTerm = "", filterMonth = "", onSe
                 
                 return (
                   <tr key={record.id}>
-                    <td className="date-cell">{checkIn.date}</td>
-                    <td className="time-cell">{checkIn.time}</td>
-                    <td className="time-cell">{checkOut.time}</td>
+                    <td className="date-cell">
+                      <div className="date-display">
+                        <span className="date-day">{checkIn.date}</span>
+                      </div>
+                    </td>
+                    <td className="time-cell">
+                      <span className="time-badge time-in">{checkIn.time}</span>
+                    </td>
+                    <td className="time-cell">
+                      <span className="time-badge time-out">{checkOut.time}</span>
+                    </td>
                     <td className="hours-cell">
                       <span className="hours-badge">
                         {getWorkingHours(record.check_in, record.check_out)}
