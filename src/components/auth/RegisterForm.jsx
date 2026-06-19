@@ -18,6 +18,7 @@ const RegisterForm = ({ onRegisterSuccess }) => {
     confirmPassword: "",
     employmentType: "",
     employeeField: "",  // New field
+    role: ""
   });
 
   // Employee fields options
@@ -181,6 +182,22 @@ const RegisterForm = ({ onRegisterSuccess }) => {
                       {field}
                     </option>
                   ))}
+                </select>
+              </div>
+
+              <div className="form-group form-group-half" style={{marginTop: '-25px'}}>
+                <label className="form-label">
+                  <span className="label-icon">👔</span> Role
+                </label>
+                <select
+                  name="role"
+                  className="form-input"
+                  value={formData.role}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="employee">Employee</option>
+                  <option value="intern">Intern</option>
                 </select>
               </div>
             </div>

@@ -9,6 +9,8 @@ import RegisterForm from "./components/auth/RegisterForm";
 import CheckInOut from "./components/attendance/CheckInOut";
 import AttendanceHistory from "./components/attendance/AttendanceHistory";
 import AttendanceReport from "./components/admin/AttendanceReport";
+import EmployeeManagement from "./components/admin/EmployeeManagement";
+import AdminDashboard from "./components/admin/AdminDashboard";
 
 const ProtectedRoute = ({ children, adminOnly = false }) => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -28,6 +30,7 @@ function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
   const handleLoginSuccess = (userData) => {
+    localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
   };
 
@@ -37,6 +40,7 @@ function App() {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
     window.location.href = "/login";
   };
@@ -57,7 +61,7 @@ function App() {
             path="/login" 
             element={
               user ? (
-                <Navigate to={user.role === "admin" ? "/admin" : "/dashboard"} replace />
+                <Navigate to={user.role === "admin" ? "/admin/dashboard" : "/dashboard"} replace />
               ) : (
                 <LoginForm onLoginSuccess={handleLoginSuccess} />
               )
@@ -68,7 +72,7 @@ function App() {
             path="/register" 
             element={
               user ? (
-                <Navigate to={user.role === "admin" ? "/admin" : "/dashboard"} replace />
+                <Navigate to={user.role === "admin" ? "/admin/dashboard" : "/dashboard"} replace />
               ) : (
                 <RegisterForm onRegisterSuccess={handleRegisterSuccess} />
               )
@@ -96,7 +100,25 @@ function App() {
 
           {/* Admin Routes */}
           <Route 
-            path="/admin" 
+            path="/admin/dashboard" 
+            element={
+              <ProtectedRoute adminOnly={true}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/admin/employees" 
+            element={
+              <ProtectedRoute adminOnly={true}>
+                <EmployeeManagement />
+              </ProtectedRoute>
+            } 
+          />
+
+          <Route 
+            path="/admin/attendance" 
             element={
               <ProtectedRoute adminOnly={true}>
                 <AttendanceReport />
@@ -104,11 +126,19 @@ function App() {
             } 
           />
 
+          {/* Admin Default Redirect - Now goes to Dashboard */}
+          <Route 
+            path="/admin" 
+            element={
+              <Navigate to="/admin/dashboard" replace />
+            } 
+          />
+
           {/* Default Redirect */}
           <Route 
             path="/" 
             element={
-              <Navigate to={user ? (user.role === "admin" ? "/admin" : "/dashboard") : "/login"} replace />
+              <Navigate to={user ? (user.role === "admin" ? "/admin/dashboard" : "/dashboard") : "/login"} replace />
             } 
           />
           

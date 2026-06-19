@@ -20,17 +20,14 @@ const AttendanceReport = () => {
     try {
       const token = getToken();
       const response = await api.get("/admin/get_employees", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       
       if (response.status === 200) {
         setEmployees(response.data.employees || []);
       }
     } catch (error) {
-      console.log(`Something went wrong! ${error}`);
-      setErrorMsg(error.response?.data?.message || "Failed to fetch employees");
+      console.log(`Error: ${error}`);
     }
   };
 
@@ -40,9 +37,7 @@ const AttendanceReport = () => {
       const token = getToken();
       
       const response = await api.get("/admin/get_all_attendance", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       
       if (response.status === 200) {
@@ -66,9 +61,7 @@ const AttendanceReport = () => {
 
       const response = await api.get("/admin/filter_attendance", {
         params,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       
       if (response.status === 200) {
@@ -101,18 +94,28 @@ const AttendanceReport = () => {
         day: "numeric",
         year: "numeric",
       }),
-      dateOnly: date.toISOString().split('T')[0], // YYYY-MM-DD format
     };
   };
 
-  // Filter attendances based on search
+  const getWorkingHours = (checkIn, checkOut) => {
+    if (!checkIn || !checkOut) return "—";
+    const start = new Date(checkIn);
+    const end = new Date(checkOut);
+    const totalMinutes = Math.floor((end - start) / (1000 * 60));
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    
+    if (hours === 0) return `${minutes}m`;
+    if (minutes === 0) return `${hours}h`;
+    return `${hours}h ${minutes}m`;
+  };
+
   const filteredAttendances = attendances.filter((attendance) =>
     attendance.employee_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     attendance.employee_email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     attendance.employee_fields?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Group attendances by date
   const groupedAttendances = useMemo(() => {
     const groups = {};
     
@@ -127,9 +130,6 @@ const AttendanceReport = () => {
           displayDate: attendance.check_in 
             ? formatDateTime(attendance.check_in).fullDate
             : 'Unknown Date',
-          shortDate: attendance.check_in 
-            ? formatDateTime(attendance.check_in).date
-            : 'Unknown',
           records: []
         };
       }
@@ -137,15 +137,12 @@ const AttendanceReport = () => {
       groups[dateKey].records.push(attendance);
     });
     
-    // Sort by date (newest first)
-    return Object.values(groups).sort((a, b) => 
-      new Date(b.date) - new Date(a.date)
-    );
+    return Object.values(groups).sort((a, b) => new Date(b.date) - new Date(a.date));
   }, [filteredAttendances]);
 
-  // Get total counts
-  const totalRecords = filteredAttendances.length;
-  const totalDays = groupedAttendances.length;
+  const isToday = (dateString) => {
+    return dateString === new Date().toISOString().split('T')[0];
+  };
 
   useEffect(() => {
     handleGetEmployees();
@@ -165,18 +162,24 @@ const AttendanceReport = () => {
       <div className="header-banner mb-4">
         <div className="header-content">
           <div>
-            <h1 className="header-title">Attendance Reports 👥</h1>
+            <h1 className="header-title">Attendance Reports 📊</h1>
             <p className="header-subtitle">View all employee attendance records grouped by date</p>
           </div>
         </div>
       </div>
 
+      {errorMsg && (
+        <div className="error-message">
+          <span>❌</span> {errorMsg}
+        </div>
+      )}
+
       <div className="students-card">
         <div className="card-header-custom">
           <div>
-            <h3 className="card-title">All Attendance Records</h3>
+            <h3 className="card-title">Attendance Records</h3>
             <p className="card-subtitle">
-              Showing {totalRecords} records across {totalDays} days
+              {filteredAttendances.length} records across {groupedAttendances.length} days
             </p>
           </div>
           <div className="header-actions">
@@ -211,8 +214,6 @@ const AttendanceReport = () => {
           </div>
         </div>
 
-        {errorMsg && <div className="error-message">{errorMsg}</div>}
-
         <div className="table-wrapper">
           {isLoading ? (
             <div style={{ textAlign: "center", padding: "60px" }}>
@@ -223,12 +224,12 @@ const AttendanceReport = () => {
             <div className="grouped-records">
               {groupedAttendances.map((group) => (
                 <div key={group.date} className="date-group">
-                  {/* Date Separator Header */}
-                  <div className="date-separator">
+                  <div className={`date-separator ${isToday(group.date) ? 'today' : ''}`}>
                     <div className="date-separator-line"></div>
                     <div className="date-separator-content">
                       <span className="date-separator-icon">📅</span>
                       <span className="date-separator-text">{group.displayDate}</span>
+                      {isToday(group.date) && <span className="today-badge">Today</span>}
                       <span className="date-separator-count">
                         {group.records.length} {group.records.length === 1 ? 'record' : 'records'}
                       </span>
@@ -236,17 +237,17 @@ const AttendanceReport = () => {
                     <div className="date-separator-line"></div>
                   </div>
 
-                  {/* Records Table for this date */}
                   <table className="students-table date-group-table">
                     <thead>
                       <tr>
-                        <th className="col-name">Employee</th>
-                        <th className="col-field">Field</th>
-                        <th className="col-email">Email</th>
-                        <th className="col-type">Type</th>
-                        <th className="col-time">Check In</th>
-                        <th className="col-time">Check Out</th>
-                        <th className="col-status">Status</th>
+                        <th>Employee</th>
+                        <th>Field</th>
+                        <th>Email</th>
+                        <th>Time</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Hours</th>
+                        <th>Status</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -256,7 +257,7 @@ const AttendanceReport = () => {
                         
                         return (
                           <tr key={attendance.id}>
-                            <td className="student-name-cell">
+                            <td>
                               <div className="student-info">
                                 <div className="student-avatar">
                                   {attendance.employee_name?.charAt(0) || 'E'}
@@ -264,24 +265,27 @@ const AttendanceReport = () => {
                                 <span className="employee-name-text">{attendance.employee_name}</span>
                               </div>
                             </td>
-                            <td className="field-cell">
-                              <span className="field-badge">
-                                {attendance.employee_fields || '—'}
-                              </span>
+                            <td>
+                              <span className="field-badge">{attendance.employee_fields || '—'}</span>
                             </td>
                             <td className="student-email">{attendance.employee_email}</td>
-                            <td className="type-cell">
+                            <td>
                               <span className={`type-badge type-${attendance.employment_type}`}>
-                                {attendance.employment_type === "full_time" ? "Full Time" : "Half Time"}
+                                {attendance.employment_type === "full_time" ? "Full" : "Half"}
                               </span>
                             </td>
-                            <td className="time-cell">
+                            <td>
                               <span className="time-badge time-in">{checkIn.time}</span>
                             </td>
-                            <td className="time-cell">
+                            <td>
                               <span className="time-badge time-out">{checkOut.time}</span>
                             </td>
-                            <td className="status-cell">
+                            <td>
+                              <span className="hours-badge">
+                                {getWorkingHours(attendance.check_in, attendance.check_out)}
+                              </span>
+                            </td>
+                            <td>
                               <span className={`status-badge status-${attendance.status?.toLowerCase() || 'present'}`}>
                                 {attendance.status || 'Present'}
                               </span>
@@ -298,16 +302,8 @@ const AttendanceReport = () => {
             <div className="empty-state">
               <div className="empty-state-content">
                 <div className="empty-icon">📊</div>
-                <p className="empty-text">
-                  {searchTerm || selectedEmployee !== "all" || selectedDate
-                    ? "No matching records found"
-                    : "No attendance records yet"}
-                </p>
-                <p className="empty-subtext">
-                  {searchTerm
-                    ? `No records match "${searchTerm}"`
-                    : "Attendance records will appear here once employees start checking in."}
-                </p>
+                <p className="empty-text">No attendance records found</p>
+                <p className="empty-subtext">Records will appear here once employees start checking in.</p>
               </div>
             </div>
           )}

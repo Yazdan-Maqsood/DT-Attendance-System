@@ -22,10 +22,48 @@ const AttendanceTable = ({ records = [], searchTerm = "", filterMonth = "", onSe
 
   const getWorkingHours = (checkIn, checkOut) => {
     if (!checkIn || !checkOut) return "—";
+    
+    const start = new Date(checkIn);
+    const end = new Date(checkOut);
+    const diffMs = end - start;
+    
+    // Convert to hours and minutes
+    const totalMinutes = Math.floor(diffMs / (1000 * 60));
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    
+    if (hours === 0 && minutes === 0) {
+      return "0m";
+    }
+    
+    if (hours === 0) {
+      // Only minutes
+      return `${minutes}m`;
+    }
+    
+    if (minutes === 0) {
+      // Only hours
+      return `${hours}h`;
+    }
+    
+    // Both hours and minutes
+    return `${hours}h ${minutes}m`;
+  };
+
+  const getWorkingHoursDecimal = (checkIn, checkOut) => {
+    if (!checkIn || !checkOut) return null;
     const start = new Date(checkIn);
     const end = new Date(checkOut);
     const diff = (end - start) / (1000 * 60 * 60);
-    return `${diff.toFixed(1)} hrs`;
+    return diff;
+  };
+
+  const getHoursColor = (checkIn, checkOut) => {
+    const hours = getWorkingHoursDecimal(checkIn, checkOut);
+    if (hours === null) return "hours-normal";
+    if (hours >= 8) return "hours-good";
+    if (hours >= 4) return "hours-half";
+    return "hours-low";
   };
 
   // Check if records exists before filtering
@@ -101,6 +139,7 @@ const AttendanceTable = ({ records = [], searchTerm = "", filterMonth = "", onSe
               filteredRecords.map((record) => {
                 const checkIn = formatDateTime(record.check_in);
                 const checkOut = formatDateTime(record.check_out);
+                const hoursClass = getHoursColor(record.check_in, record.check_out);
                 
                 return (
                   <tr key={record.id}>
@@ -116,7 +155,7 @@ const AttendanceTable = ({ records = [], searchTerm = "", filterMonth = "", onSe
                       <span className="time-badge time-out">{checkOut.time}</span>
                     </td>
                     <td className="hours-cell">
-                      <span className="hours-badge">
+                      <span className={`hours-badge ${hoursClass}`}>
                         {getWorkingHours(record.check_in, record.check_out)}
                       </span>
                     </td>

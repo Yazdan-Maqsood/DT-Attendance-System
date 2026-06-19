@@ -49,23 +49,30 @@ const Navbar = ({ user, onLogout }) => {
             
           <div className="brand-text">
             <span className="brand-title">Desired Technologies</span>
-            <span className="brand-subtitle">Smart Attendance System</span>
+            <span className="brand-subtitle">Smart Tracker System</span>
           </div>
         </Link>
 
         {/* Desktop Navigation Links */}
         <div className="navbar-links desktop-only column-gap-5">
           {user?.role === "admin" ? (
-            <Link to="/admin" className={`nav-link ${isActive("/admin")}`}>
-              <span className="nav-link-icon"></span>
-              <span>Reports</span>
-            </Link>
+            <>
+            <Link to="/admin/dashboard" className={`nav-link ${isActive("/admin/dashboard")}`}>
+                <span>Dashboard</span>
+              </Link>
+             <Link to="/admin/employees" className={`nav-link ${isActive("/admin/employees")}`}>
+                <span>Employees</span>
+              </Link>
+              <Link to="/admin/attendance" className={`nav-link ${isActive("/admin/attendance")}`}>
+                <span>Attendance</span>
+              </Link>
+            </>
           ) : (
             <>
               <Link to="/dashboard" className={`nav-link ${isActive("/dashboard")}`}>
                 <span className="nav-link-icon"></span>
                 <span>Dashboard</span>
-              </Link>
+              </Link>            
               <Link to="/history" className={`nav-link ${isActive("/history")}`}>
                 <span className="nav-link-icon"></span>
                 <span>History</span>
@@ -121,10 +128,17 @@ const Navbar = ({ user, onLogout }) => {
 
           <nav className="mobile-links">
             {user?.role === "admin" ? (
-              <Link to="/admin" className={`mobile-link ${isActive("/admin")}`}>
-                <span className="mobile-link-icon"></span>
-                <span>Attendance Reports</span>
-              </Link>
+              <>
+                <Link to="/admin/employees" className={`mobile-link ${isActive("/admin/employees")}`}>
+                  <span className="mobile-link-icon"></span>
+                  <span>Employees</span>
+                </Link>
+                 <Link to="/admin/attendance" className={`mobile-link ${isActive("/admin/attendance")}`}>
+                  <span className="mobile-link-icon"></span>
+                  <span>Attendance</span>
+                </Link>
+              </>
+              
             ) : (
               <>
                 <Link to="/dashboard" className={`mobile-link ${isActive("/dashboard")}`}>

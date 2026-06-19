@@ -137,6 +137,90 @@
   opacity: 0.8;
 }
 
+
+/* --- Desktop Links --- */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  color: var(--gray);
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: var(--dark);
+  background: rgba(15, 23, 42, 0.04);
+}
+
+/* Remove old active styles and replace with these */
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  color: var(--gray);
+  text-decoration: none;
+  border-radius: 0; /* Remove border-radius */
+  font-weight: 500;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  position: relative;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover {
+  color: var(--dark);
+  background: transparent;
+}
+
+.nav-link-active {
+  color: var(--primary) !important;
+  background: transparent !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid var(--primary) !important;
+}
+
+/* Mobile */
+.mobile-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  color: var(--gray);
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 15px;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.mobile-link:hover {
+  background: rgba(15, 23, 42, 0.02);
+  color: var(--dark);
+}
+
+.mobile-link.nav-link-active {
+  background: transparent !important;
+  color: var(--primary) !important;
+  font-weight: 600 !important;
+  border-left: 3px solid var(--primary) !important;
+}
+
+
 /* --- User Actions --- */
 .navbar-actions {
   display: flex;
