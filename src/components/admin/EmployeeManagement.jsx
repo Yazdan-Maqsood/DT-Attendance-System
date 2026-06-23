@@ -11,7 +11,7 @@ const EmployeeManagement = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [roleFilter, setRoleFilter] = useState("all"); // ✅ NEW: Role filter
+  const [roleFilter, setRoleFilter] = useState("all"); 
   const [actionLoading, setActionLoading] = useState({});
 
   // Modal states
@@ -31,8 +31,7 @@ const EmployeeManagement = () => {
 
   const employeeFields = [
     "Web Development", "Wordpress Development", "Flutter Mobile App Development",
-    "UI/UX Design", "Graphic Design", "Backend Development",
-    "Frontend Development", "Full Stack Development", "DevOps Engineering",
+    "UI/UX Design", "Graphic Design", "DevOps Engineering",
     "Data Science", "Machine Learning", "Artificial Intelligence",
     "Cloud Computing", "Cybersecurity", "Blockchain Development",
     "Game Development", "Quality Assurance (QA)", "Project Management",
@@ -120,17 +119,20 @@ const EmployeeManagement = () => {
     try {
       setIsLoading(true);
       const token = getToken();
+
       const response = await api.put(`/admin/update_employee/${editingEmployee.id}`, {
         name: formData.name, email: formData.email, password: formData.password || undefined,
         employmentType: formData.employmentType, employeeFields: formData.employeeField,
         role: formData.role,
       }, { headers: { Authorization: `Bearer ${token}` } });
+     
       if (response.status === 200) {
         setSuccessMsg("Employee updated successfully!");
         setShowEditModal(false); setEditingEmployee(null); resetForm(); handleGetEmployees();
         setTimeout(() => setSuccessMsg(""), 3000);
       }
-    } catch (error) {
+    }
+     catch (error) {
       setErrorMsg(error.response?.status === 409 ? "Email already exists" : error.response?.data?.message || "Failed to update employee");
       setTimeout(() => setErrorMsg(""), 4000);
     } finally { setIsLoading(false); }
@@ -213,13 +215,13 @@ const EmployeeManagement = () => {
 
   // ✅ Filter employees by search AND role
   const filteredEmployees = employees.filter(emp => {
-    const matchesSearch = 
+    const matchesSearch =
       emp.employeeName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       emp.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       emp.employee_fields?.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesRole = roleFilter === "all" || emp.role === roleFilter;
-    
+
     return matchesSearch && matchesRole;
   });
 
@@ -250,7 +252,7 @@ const EmployeeManagement = () => {
           <div>
             <h3 className="card-title">All Employees</h3>
             <p className="card-subtitle">
-              {filteredEmployees.length} of {employees.length} members 
+              {filteredEmployees.length} of {employees.length} members
               ({employeeCount} employees, {internCount} interns, {studentCount} students)
             </p>
           </div>
@@ -300,7 +302,7 @@ const EmployeeManagement = () => {
                     const empStatus = todayStatus[employee.id] || {};
                     const isCheckedIn = empStatus.checked_in;
                     const isCheckedOut = empStatus.checked_out;
-                    
+
                     return (
                       <tr key={employee.id}>
                         <td className="col-emp-name">
@@ -310,11 +312,11 @@ const EmployeeManagement = () => {
                           </div>
                         </td>
                         <td className="col-emp-role">
-                           <span className={`role-badge role-${employee.role || 'employee'}`}>
-                              {employee.role === 'intern' ? 'Intern' : 
-                              employee.role === 'student' ? 'Student' : 
-                              'Employee'}
-                            </span>
+                          <span className={`role-badge role-${employee.role || 'employee'}`}>
+                            {employee.role === 'intern' ? 'Intern' :
+                              employee.role === 'student' ? 'Student' :
+                                'Employee'}
+                          </span>
                         </td>
                         <td className="col-emp-field">
                           <span className="field-badge">{employee.employee_fields || '—'}</span>
@@ -489,7 +491,7 @@ const EmployeeManagement = () => {
                     <select name="role" className="form-input" value={formData.role} onChange={handleInputChange} required>
                       <option value="employee">Employee</option>
                       <option value="intern">Intern</option>
-                      <option value="student">Student</option>  
+                      <option value="student">Student</option>
                     </select>
                   </div>
                 </div>

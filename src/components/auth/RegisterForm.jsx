@@ -24,8 +24,7 @@ const RegisterForm = ({ onRegisterSuccess }) => {
   // Employee fields options
   const employeeFields = [
     "Web Development", "Wordpress Development", "Flutter Mobile App Development",
-    "UI/UX Design", "Graphic Design", "Backend Development",
-    "Frontend Development", "Full Stack Development", "DevOps Engineering",
+    "UI/UX Design", "Graphic Design", "DevOps Engineering",
     "Data Science", "Machine Learning", "Artificial Intelligence",
     "Cloud Computing", "Cybersecurity", "Blockchain Development",
     "Game Development", "Quality Assurance (QA)", "Project Management",

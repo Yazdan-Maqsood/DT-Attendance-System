@@ -299,7 +299,7 @@ const AttendanceReport = () => {
               ))}
             </div>
           ) : (
-            <div className="empty-state">
+            <div className="empty-state py-4">
               <div className="empty-state-content">
                 <div className="empty-icon">📊</div>
                 <p className="empty-text">No attendance records found</p>
