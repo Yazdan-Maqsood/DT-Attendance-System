@@ -30,7 +30,7 @@ const EmployeeManagement = () => {
   });
 
   const employeeFields = [
-    "Web Development", "Flutter Development", "Mobile App Development",
+    "Web Development", "Wordpress Development", "Flutter Mobile App Development",
     "UI/UX Design", "Graphic Design", "Backend Development",
     "Frontend Development", "Full Stack Development", "DevOps Engineering",
     "Data Science", "Machine Learning", "Artificial Intelligence",

@@ -23,30 +23,14 @@ const RegisterForm = ({ onRegisterSuccess }) => {
 
   // Employee fields options
   const employeeFields = [
-    "Web Development",
-    "Flutter Development",
-    "Mobile App Development",
-    "UI/UX Design",
-    "Graphic Design",
-    "Backend Development",
-    "Frontend Development",
-    "Full Stack Development",
-    "DevOps Engineering",
-    "Data Science",
-    "Machine Learning",
-    "Artificial Intelligence",
-    "Cloud Computing",
-    "Cybersecurity",
-    "Blockchain Development",
-    "Game Development",
-    "Quality Assurance (QA)",
-    "Project Management",
-    "Business Analysis",
-    "Digital Marketing",
-    "SEO Specialist",
-    "Content Writing",
-    "Video Editing",
-    "Other"
+    "Web Development", "Wordpress Development", "Flutter Mobile App Development",
+    "UI/UX Design", "Graphic Design", "Backend Development",
+    "Frontend Development", "Full Stack Development", "DevOps Engineering",
+    "Data Science", "Machine Learning", "Artificial Intelligence",
+    "Cloud Computing", "Cybersecurity", "Blockchain Development",
+    "Game Development", "Quality Assurance (QA)", "Project Management",
+    "Business Analysis", "Digital Marketing", "SEO Specialist",
+    "Content Writing", "Video Editing", "Other"
   ];
 
   const handleInputChange = (e) => {
