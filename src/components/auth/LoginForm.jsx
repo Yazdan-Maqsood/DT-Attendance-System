@@ -51,6 +51,7 @@ const LoginForm = ({ onLoginSuccess }) => {
     setIsLoading(false);
   }
 };
+
   return (
     <div className="auth-container">
       <div className="auth-card">
